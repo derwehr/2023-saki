@@ -2,30 +2,37 @@
 
 ## Summary
 
-<!-- Describe your data science project in max. 5 sentences. -->
-This projects analyzes XY.
+Weather severly influences driving conditions. But is that influence noticable in speeding offenses, too? This project aims to discover correlations between weather conditions and speeding offenses by analyzing data provided by the city of cologne.
 
 ## Rationale
 
-<!-- Outline the impact of the analysis, e.g. which pains it solves. -->
-The analysis helps XY to do YZ.
+Bringing possible motivators for speeding to light helps fight these offenses.
 
 ## Datasources
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource1: ExampleSource
-* Metadata URL: https://mobilithek.info/offers/-6901989592576801458
-* Data URL: https://raw.githubusercontent.com/od-ms/radverkehr-zaehlstellen/main/100035541/2019-01.csv
+### Datasource1: Traffic disruptions Köln
+* Metadata URL: https://mobilithek.info/offers/-8862870771136450928
+* Data URL: https://offenedaten-koeln.de/sites/default/files/Geschwindigkeit%C3%BCberwachung_Koeln_Gesamt_2017-2021.csv
 * Data Type: CSV
 
-Short description.
+A CSV data set on all speeding offenses in Köln since 2017.
+
+### Datasource2: ExampleSource
+* Metadata URL: https://dev.meteostat.net/bulk/
+* Data URL: https://bulk.meteostat.net/v2/hourly/10637.csv.gz
+* Data Type: CSV
+
+Data dumps of individual weather stations.
 
 ## Work Packages
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
-1. Example Issue [#1][i1]
-2. ...
-
-[i1]: https://github.com/jvalue/2023-amse-template/issues/1
+- [x] [Find usable open data sources](https://github.com/derwehr/2023-saki/issues/1)
+- [ ] [Build data pipelines](https://github.com/derwehr/2023-saki/issues/2)
+- [ ] [Analyze data and identify correlations](https://github.com/derwehr/2023-saki/issues/3)
+- [ ] [Implement automated testing](https://github.com/derwehr/2023-saki/issues/4)
+- [ ] [Add continous integration](https://github.com/derwehr/2023-saki/issues/5)
+- [ ] [Deploy project to GH pages](https://github.com/derwehr/2023-saki/issues/6)
