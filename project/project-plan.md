@@ -19,7 +19,7 @@ Bringing possible motivators for speeding to light helps fight these offenses.
 
 A CSV data set on all speeding offenses in Köln since 2017.
 
-### Datasource2: ExampleSource
+### Datasource2: Meteostat weather dumps
 * Metadata URL: https://dev.meteostat.net/bulk/
 * Data URL: https://bulk.meteostat.net/v2/hourly/10637.csv.gz
 * Data Type: CSV
