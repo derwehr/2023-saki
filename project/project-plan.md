@@ -12,7 +12,7 @@ Bringing possible motivators for speeding to light helps fight these offenses.
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource1: Traffic disruptions Köln
+### Datasource1: Speeding offsenses in Köln
 * Metadata URL: https://mobilithek.info/offers/-8862870771136450928
 * Data URL: https://offenedaten-koeln.de/sites/default/files/Geschwindigkeit%C3%BCberwachung_Koeln_Gesamt_2017-2021.csv
 * Data Type: CSV
