@@ -32,6 +32,9 @@ Data dumps of individual weather stations.
 
 - [x] [Find usable open data sources](https://github.com/derwehr/2023-saki/issues/1)
 - [ ] [Build data pipelines](https://github.com/derwehr/2023-saki/issues/2)
+  - [ ] [add data pipeline for speeding offenses & transform data](https://github.com/derwehr/2023-saki/issues/7)
+  - [ ] [get offense locations using the provided lookup tables](https://github.com/derwehr/2023-saki/issues/8)
+  - [ ] [add data pipeline to get weather data of the offense locations at the offense time](https://github.com/derwehr/2023-saki/issues/9)
 - [ ] [Analyze data and identify correlations](https://github.com/derwehr/2023-saki/issues/3)
 - [ ] [Implement automated testing](https://github.com/derwehr/2023-saki/issues/4)
 - [ ] [Add continous integration](https://github.com/derwehr/2023-saki/issues/5)
