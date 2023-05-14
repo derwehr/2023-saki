@@ -110,6 +110,6 @@ offenses = offenses.drop(['location1', 'location2', 'location3'], axis=1)
 
 # write data to sqlite database
 print('Writing data to database')
-offenses.to_sql('offenses', 'sqlite:///' + os.path.join(script_dir, 'data.db'),
+offenses.to_sql('offenses', 'sqlite:///' + os.path.join(script_dir, 'data.sqlite'),
                 if_exists='replace', index=False)
 print('Done')
