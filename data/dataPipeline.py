@@ -1,9 +1,11 @@
+from datetime import timedelta
 import os.path
 import pandas as pd
 import numpy as np
 import urllib.request
 import geocoder
 import requests_cache
+from meteostat import Point, Hourly
 
 source_path = 'https://offenedaten-koeln.de/sites/default/files/'
 offenses_file = 'Geschwindigkeit%C3%BCberwachung_Koeln_Gesamt_2017-2021.csv'
@@ -15,6 +17,19 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def get_path(filename):
+    '''
+    Returns the absolute path of a file in the same directory as this script.
+
+    Parameters
+    ----------
+    filename : string
+        The name of the file.
+
+    Returns
+    -------
+    string
+        The absolute path of the file.
+    '''
     return os.path.join(script_dir, filename)
 
 
@@ -24,11 +39,27 @@ def get_path(filename):
 # download the offenses file if it does not exist
 if not os.path.isfile(get_path(offenses_file)):
     print('Could not find ' + offenses_file + ', downloading from source.')
-    urllib.request.urlretrieve(source_path + offenses_file, get_path(offenses_file))    
+    urllib.request.urlretrieve(source_path + offenses_file, get_path(offenses_file))
 
 
 # download location files and add lat and lon columns to csv
 def get_lat_lon(address1, address2):
+    '''
+    Takes two address strings and returns the coordinates of the first address
+    that could be geocoded.
+
+    Parameters
+    ----------
+    address1 : string
+        The first address to be geocoded.
+    address2 : string
+        The second address to be geocoded.
+
+    Returns
+    -------
+    tuple
+        A tuple containing the latitude and longitude of the address.
+    '''
     location = geocoder.osm(address1 + 'Köln, Germany')
     if location.ok:
         return location.latlng
@@ -59,7 +90,8 @@ for prefix, file in location_files.items():
         location_sources[prefix] = pd.read_csv(target, sep=';', encoding='latin-1',
                                                names=loc_headers, skiprows=1, usecols=loc_cols)
         location_sources[prefix]['lat'], location_sources[prefix]['lon'] = zip(
-            *location_sources[prefix].apply(lambda row: get_lat_lon(row['address1'], row['address2']), axis=1))
+            *location_sources[prefix].apply(
+                lambda row: get_lat_lon(row['address1'], row['address2']), axis=1))
         location_sources[prefix] = location_sources[prefix].drop(
             ['address1', 'address2'], axis=1)
         # drop rows with empty lat and lon
@@ -106,31 +138,20 @@ offenses['datetime'] = pd.to_datetime(offenses['date'] + offenses['time'], forma
 offenses = offenses.drop(['date', 'time'], axis=1)
 
 
-def address_to_coords(address):
+def get_location_data(row):
     '''
-    Takes a row with address data and returns the coordinates of the address.
+    Takes a row with location data and returns the coordinates of the location.
 
     Parameters
     ----------
-    address : string
-        The address to be geocoded.
+    row : pandas.Series
+        The row containing the location data.
 
     Returns
     -------
     tuple
-        A tuple containing the latitude and longitude of the address.
+        A tuple containing the latitude and longitude of the location.
     '''
-    g = geocoder.osm(address)
-
-    if g.ok:
-        # return coordinates if address was found
-        return g.latlng
-    else:
-        # return None if address was not found
-        return None
-
-
-def get_location_data(row):
     location2 = row['location2']
     location3 = row['location3']
     if location2.isnumeric():
@@ -160,6 +181,35 @@ offenses = offenses[offenses['lat'].notna()]
 
 # drop location columns
 offenses = offenses.drop(['location1', 'location2', 'location3'], axis=1)
+
+
+def get_weather_data(row):
+    '''
+    Takes a row with coordinates and returns the weather data for that location.
+
+    Parameters
+    ----------
+    row : pandas.Series
+        A row of the offenses dataframe.
+
+    Returns
+    -------
+    '''
+    point = Point(row['lat'], row['lon'])
+    # find the weather station closest to the coordinates
+    start = row['datetime'].to_pydatetime()
+    end = start + timedelta(hours=2)
+    hourly = Hourly(point, start=start, end=end).fetch()
+    return [hourly['temp'].iloc[0], hourly['prcp'].iloc[0], hourly['wspd'].iloc[0]]
+
+
+# Add weather data
+print('Adding weather data to offenses')
+offenses[['temperature', 'precipitation', 'wind speed']] = np.vstack(
+    offenses.apply(get_weather_data, axis=1))
+
+# drop rows without weather data
+offenses = offenses[offenses['temperature'].notna()]
 
 # write data to sqlite database
 print('Writing data to database')
