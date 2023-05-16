@@ -93,7 +93,7 @@ def process_location_file(prefix, file):
         The prefix of the location file.
     file : string
         The name of the location file.
- 
+
     Returns
     -------
     '''
