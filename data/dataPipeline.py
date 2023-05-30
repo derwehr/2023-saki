@@ -71,12 +71,12 @@ def get_lat_lon(address1, address2):
     tuple
         A tuple containing the latitude and longitude of the address.
     '''
-    location = osm(address1 + 'Köln, Germany')
+    location = osm(address1 + ', Köln, Germany')
     if location.ok:
         return location.latlng
     else:
         # try address2
-        location = osm(address2 + 'Köln, Germany')
+        location = osm(address2 + ', Köln, Germany')
         if location.ok:
             return location.latlng
     # return None if address could not be found
