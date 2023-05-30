@@ -1,4 +1,3 @@
 .vscode
-data/*.csv
-data/*.sqlite
+data/**/*.sqlite
 *.pyc
