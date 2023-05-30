@@ -19,6 +19,7 @@ loc_headers = ['year', 'location', 'allowed speed car',
 loc_cols = ['location', 'address1', 'address2']
 location_sources = dict()
 script_dir = dirname(abspath(__file__))
+output_db = 'data.sqlite'
 
 
 def get_path(filename):
@@ -237,7 +238,7 @@ def main():
 
     # write data to sqlite database
     print('Writing data to database')
-    offenses.to_sql('offenses', 'sqlite:///' + get_path('data.sqlite'), if_exists='replace',
+    offenses.to_sql('offenses', 'sqlite:///' + get_path(output_db), if_exists='replace',
                     index=False)
     print('Done')
 
