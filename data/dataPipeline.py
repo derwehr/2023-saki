@@ -207,8 +207,9 @@ def main():
     # drop rows where location2 is empty
     offenses = offenses[offenses['location2'] != '']
     
-    # drop rows where exceedance is empty or whitespaces
-    offenses = offenses[offenses['exceedance'].str.strip() != '']
+    # drop rows where exceedance is empty or not numeric
+    offenses = offenses[offenses['exceedance'].astype(str).str.isnumeric()]
+
     # convert exceedance to float
     offenses['exceedance'] = offenses['exceedance'].astype(float)
 
