@@ -206,6 +206,11 @@ def main():
 
     # drop rows where location2 is empty
     offenses = offenses[offenses['location2'] != '']
+    
+    # drop rows where exceedance is empty or whitespaces
+    offenses = offenses[offenses['exceedance'].str.strip() != '']
+    # convert exceedance to float
+    offenses['exceedance'] = offenses['exceedance'].astype(float)
 
     # Parse date and time
     print('Parsing date and time')
