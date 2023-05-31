@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# make sure we're in the right directory
+cd "${0%/*}"/..
+
 # Run tests
-# Needs to be called from project root
 pytest
