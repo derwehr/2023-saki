@@ -209,6 +209,7 @@ def main():
     
     # drop rows where exceedance is empty or not numeric
     offenses = offenses[offenses['exceedance'].astype(str).str.isnumeric()]
+    offenses['exceedance'] = offenses['exceedance'].astype(int)
 
     # convert exceedance to float
     offenses['exceedance'] = offenses['exceedance'].astype(float)
