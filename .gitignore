@@ -1,3 +1,4 @@
 .vscode
 data/**/*.sqlite
+exercise/**/*.sqlite
 *.pyc
