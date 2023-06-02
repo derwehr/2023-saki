@@ -1,0 +1,95 @@
+
+valuetype notEmptyText oftype text {
+    constraints: [
+        notEmpty
+    ];
+}
+
+
+constraint notEmpty oftype LengthConstraint {
+    minLength: 1;
+}
+
+valuetype verkehrValue oftype text {
+    constraints: [
+        verkehrAllowlist,
+        notEmpty,
+    ];
+}
+
+constraint verkehrAllowlist oftype AllowlistConstraint {
+    allowlist: [
+        "FV",
+        "RV",
+        "nur DPN",
+    ];
+}
+
+valuetype coordinateValue oftype decimal {
+    constraints: [
+        coordinateRangeConstraint,
+    ];
+}
+
+
+constraint coordinateRangeConstraint oftype RangeConstraint {
+    lowerBound: -90;
+    upperBound: 90;
+}
+
+valuetype IFOPTValue oftype text {
+    constraints: [
+        IFOPTConstraint,
+    ];
+}
+
+constraint IFOPTConstraint oftype RegexConstraint {
+    regex: /^[a-zA-Z]{2}:\d+:\d+(:\d+)?$/;
+}
+
+pipeline trainstopsPipeline {
+
+    block extractor oftype HttpExtractor {
+        url: "https://download-data.deutschebahn.com/static/datasets/haltestellen/D_Bahnhof_2020_alle.CSV";
+    }
+
+    block textFileInterpreter oftype TextFileInterpreter {
+
+    }
+
+    block CSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    block columnDeleter oftype ColumnDeleter {
+        delete: [column J];
+    }
+
+    block tableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "EVA_NR" oftype integer,
+            "DS100" oftype notEmptyText,
+            "IFOPT" oftype IFOPTValue,
+            "Name" oftype notEmptyText,
+            "Verkehr" oftype verkehrValue,
+            "Laenge" oftype coordinateValue,
+            "Breite" oftype coordinateValue,
+            "Betreiber Name" oftype notEmptyText,
+            "Betreiber Nr" oftype integer,
+            "Status" oftype notEmptyText,
+        ];
+    }
+
+    block loader oftype SQLiteLoader {
+        table: "trainstops";
+        file: "./trainstops.sqlite";
+    }
+
+    extractor
+        -> textFileInterpreter
+        -> CSVInterpreter
+        -> columnDeleter
+        -> tableInterpreter
+        -> loader;
+}
