@@ -71,12 +71,12 @@ pipeline trainstopsPipeline {
             "EVA_NR" oftype integer,
             "DS100" oftype notEmptyText,
             "IFOPT" oftype IFOPTValue,
-            "Name" oftype notEmptyText,
+            "NAME" oftype notEmptyText,
             "Verkehr" oftype verkehrValue,
             "Laenge" oftype coordinateValue,
             "Breite" oftype coordinateValue,
-            "Betreiber Name" oftype notEmptyText,
-            "Betreiber Nr" oftype notEmptyText,
+            "Betreiber_Name" oftype notEmptyText,
+            "Betreiber_Nr" oftype notEmptyText,
         ];
     }
 
