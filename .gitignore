@@ -1,4 +1,4 @@
 .vscode
 data/**/*.sqlite
-exercise/**/*.sqlite
+exercises/**/*.sqlite
 *.pyc
