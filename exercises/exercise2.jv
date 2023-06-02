@@ -76,7 +76,7 @@ pipeline trainstopsPipeline {
             "Laenge" oftype coordinateValue,
             "Breite" oftype coordinateValue,
             "Betreiber_Name" oftype notEmptyText,
-            "Betreiber_Nr" oftype notEmptyText,
+            "Betreiber_Nr" oftype integer,
         ];
     }
 
