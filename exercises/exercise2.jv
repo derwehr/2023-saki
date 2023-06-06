@@ -13,7 +13,6 @@ constraint notEmpty oftype LengthConstraint {
 valuetype verkehrValue oftype text {
     constraints: [
         verkehrAllowlist,
-        notEmpty,
     ];
 }
 
