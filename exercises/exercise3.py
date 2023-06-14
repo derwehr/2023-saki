@@ -14,10 +14,16 @@ df['date'] = df['date'].astype(str)
 df['name'] = df['name'].astype(str)
 df['CIN'] = df['CIN'].astype(str).str.zfill(5)
 
+# all other columns should be positive integers > 0
 numeric_cols = ['petrol', 'diesel', 'gas', 'electro', 'hybrid', 'plugInHybrid', 'others']
 df = df.dropna(subset=numeric_cols)
 df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 df = df.dropna(subset=numeric_cols)
 df = df[(df[numeric_cols] > 0).all(axis=1)]
+
+# use fitting SQLite data types
+dtypes = {'date': 'string', 'CIN': 'string', 'name': 'string', 'petrol': 'int', 'diesel': 'int', 'gas': 'int',
+          'electro': 'int', 'hybrid': 'int', 'plugInHybrid': 'int', 'others': 'int'}
+df = df.astype(dtypes)
 
 df.to_sql(table_name, 'sqlite:///' + path, if_exists='replace', index=False)
