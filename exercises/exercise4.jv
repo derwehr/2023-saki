@@ -2,7 +2,7 @@ transform CelsiusToFahrenheit {
     from tempCelsius oftype decimal;
     to tempFahrenheit oftype decimal;
 
-    tempFahrenheit: tempCelsius * 1.8 + 32;
+    tempFahrenheit: (tempCelsius * 1.8) + 32;
 }
 
 pipeline temperaturePipeline {
