@@ -2,7 +2,7 @@ transform CelsiusToFahrenheit {
     from tempCelsius oftype decimal;
     to tempFahrenheit oftype decimal;
 
-    tempFahrenheit: tempCelsius * 9 / 5 + 32;
+    tempFahrenheit: ((tempCelsius * 9)/5) + 32;
 }
 
 pipeline temperaturePipeline {
@@ -29,6 +29,10 @@ pipeline temperaturePipeline {
 
     block rowDeleter oftype RowDeleter {
         delete: [row 1];
+    }
+
+    block columnDeleter oftype ColumnDeleter {
+        delete: [column F, column G, column H, column I,  column L, column M, column N, column O];
     }
 
     block tableInterpreter oftype TableInterpreter {
@@ -67,6 +71,7 @@ pipeline temperaturePipeline {
         -> textFileInterpreter
         -> csvInterpreter
         -> rowDeleter
+        -> columnDeleter
         -> tableInterpreter
         -> fahrenheitTransformer
         -> fahrenheitTransformer2
