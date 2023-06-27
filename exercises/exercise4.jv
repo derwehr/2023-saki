@@ -52,7 +52,7 @@ pipeline temperaturePipeline {
 
     block temperatureLoader oftype SQLiteLoader {
         table: "temperatures";
-        file: "temperature.sqlite";
+        file: "temperatures.sqlite";
     }
 
     extractor
