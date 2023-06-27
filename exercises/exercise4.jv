@@ -1,0 +1,67 @@
+transform CelsiusToFahrenheit {
+    from tempCelsius oftype decimal;
+    to tempFahrenheit oftype decimal;
+
+    tempFahrenheit: tempCelsius * 1.8 + 32;
+}
+
+pipeline temperaturePipeline {
+
+    block extractor oftype HttpExtractor {
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
+
+    block archiveInterpreter oftype ArchiveInterpreter {
+        archiveType: "zip";
+    }
+
+    block filePicker oftype FilePicker {
+        path: "/data.csv";
+    }
+
+    block textFileInterpreter oftype TextFileInterpreter {
+
+    }
+
+    block csvInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    block rowDeleter oftype RowDeleter {
+        delete: [row 1];
+    }
+
+    block tableInterpreter oftype TableInterpreter {
+        header: false;
+        columns: [
+            "Geraet" oftype integer,
+            "Hersteller" oftype text,
+            "Model" oftype text,
+            "Monat" oftype integer,
+            "Temperatur" oftype decimal,
+            "Batterietemperatur" oftype decimal,
+            "Geraet aktiv" oftype text
+        ];
+    }
+
+    block fahrenheitTransformer oftype TableTransformer {
+        inputColumn: "Temperatur";
+        outputColumn: "Temperatur";
+        use: CelsiusToFahrenheit;
+    }
+
+    block temperatureLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "temperature.sqlite";
+    }
+
+    extractor
+        -> archiveInterpreter
+        -> filePicker
+        -> textFileInterpreter
+        -> csvInterpreter
+        -> rowDeleter
+        -> tableInterpreter
+        -> fahrenheitTransformer
+        -> temperatureLoader;
+}
