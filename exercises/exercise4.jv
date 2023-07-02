@@ -5,6 +5,15 @@ transform CelsiusToFahrenheit {
     tempFahrenheit: (tempCelsius * 9)/5 + 32;
 }
 
+constraint monatConstraint oftype RangeConstraint {
+    lowerBound: 1;
+    upperBound: 12;
+}
+
+valuetype monat oftype integer {
+    constraints: [monatConstraint];
+}
+
 pipeline temperaturePipeline {
 
     block extractor oftype HttpExtractor {
@@ -41,7 +50,7 @@ pipeline temperaturePipeline {
             "Geraet" oftype integer,
             "Hersteller" oftype text,
             "Model" oftype text,
-            "Monat" oftype integer,
+            "Monat" oftype monat,
             "Temperatur" oftype decimal,
             "Batterietemperatur" oftype decimal,
             "Geraet aktiv" oftype text
